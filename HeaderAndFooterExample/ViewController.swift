@@ -8,12 +8,9 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
     private let tableView = UITableView()
     private let tableHeaderView = UIView()
     private let tableFooterView = UIView()
-    
-    lazy var headerHeightConstraint: NSLayoutConstraint = tableHeaderView.heightAnchor.constraint(equalToConstant: 100)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,31 +45,11 @@ class ViewController: UIViewController {
     }
     
     private func headerViewLayout() {
-        /*
-         Can Use Frame
-         */
-        //tableHeaderView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 100)
-
-        tableHeaderView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tableHeaderView.widthAnchor.constraint(equalToConstant: view.bounds.width),
-            headerHeightConstraint
-        ])
-        tableHeaderView.layoutIfNeeded()
+        tableHeaderView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 100)
     }
     
     private func footerViewLayout() {
         tableFooterView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 100)
-        /*
-         Fail
-         tableFooterView.translatesAutoresizingMaskIntoConstraints = false
-         
-         NSLayoutConstraint.activate([
-             tableFooterView.widthAnchor.constraint(equalToConstant: view.bounds.width),
-             tableFooterView.heightAnchor.constraint(equalToConstant: 100)
-         ])
-         tableFooterView.layoutIfNeeded()
-         */
     }
 }
 

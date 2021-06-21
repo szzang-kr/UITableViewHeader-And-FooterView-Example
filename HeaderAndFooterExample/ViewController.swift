@@ -9,12 +9,19 @@ import UIKit
 
 class ViewController: UIViewController {
     private let tableView = UITableView()
-    private let tableHeaderView = UIView()
+    private let tableHeaderView = HuniHeaderView()
     private let tableFooterView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) { [weak self] in
+            self?.updateContent()
+        }
     }
     
     private func setUp() {
@@ -51,6 +58,25 @@ class ViewController: UIViewController {
     private func footerViewLayout() {
         tableFooterView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 100)
     }
+    
+    @objc
+    private func updateContent() {
+        tableHeaderView.setText("""
+                안녕하세요 ! dvHuni입니다.\n
+                데일리 이슈 4번째 포스트!!\n
+                UITableView의 HeaderView&FooterView\n
+                삽입하기 입니다!
+                """)
+        tableHeaderView.layoutIfNeeded()
+        updateHederViewHeight()
+    }
+    
+    private func updateHederViewHeight() {
+        let calculatedHeight: CGFloat = tableHeaderView.contentHeight
+        tableHeaderView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: calculatedHeight)
+        
+        tableView.tableHeaderView = tableHeaderView
+    }
 }
 
 extension ViewController: UITableViewDelegate {
@@ -74,17 +100,14 @@ extension ViewController: UITableViewDataSource {
 class HuniHeaderView: UIView {
     let label = UILabel()
     
+    var contentHeight: CGFloat {
+        label.bounds.height
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         attribute()
         layout()
-        
-        setText("""
-                안녕하세요 ! dvHuni입니다.\n
-                데일리 이슈 4번째 포스트!!\n
-                UITableView의 HeaderView&FooterView\n
-                삽입하기 입니다!
-                """)
     }
     
     private func attribute() {
@@ -99,7 +122,6 @@ class HuniHeaderView: UIView {
             label.topAnchor.constraint(equalTo: self.topAnchor),
             label.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             label.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            label.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
     
